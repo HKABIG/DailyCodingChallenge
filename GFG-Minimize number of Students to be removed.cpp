@@ -1,17 +1,30 @@
 //Subtracting total number of students with the number of students who can see
 class Solution {
   public:
-    int removeStudents(int H[], int n) {
-        // code here
-        vector<int> arr;
-        for(int i=0;i<n;i++){
-            int it = lower_bound(arr.begin(),arr.end(),H[i])-arr.begin();
-            if(it==arr.size()){
-                arr.push_back(H[i]);
-            }
-            else
-                arr[it]=H[i];
+    int binary(int arr[],int low,int high,int key){
+        while(low<high){
+            int mid = (low+high)/2;
+            if(arr[mid]<key)
+                low = mid+1;
+            else 
+                high = mid;
         }
-        return n-arr.size();
+        return low;
+    }
+    int removeStudents(int h[], int n) {
+        // code here
+        int arr[n];
+        arr[0] = h[0];
+        int k = 1;
+        for(int i=1;i<n;i++){
+            if(h[i]>arr[k-1]){
+                arr[k++] = h[i];
+            }
+            else{
+                int index = binary(arr,0,k,h[i]);
+                arr[index] = h[i];
+            }
+        }
+        return n-k;
     }
 };
